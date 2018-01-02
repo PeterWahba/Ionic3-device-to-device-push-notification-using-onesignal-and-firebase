@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 import { OneSignal } from '@ionic-native/onesignal';
-import { Platform } from 'ionic-angular';
+import { Platform,AlertController } from 'ionic-angular';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { AppConfig } from '../../app/app-config';
@@ -13,7 +13,9 @@ export class OnesignalProvider {
     public One: OneSignal,
     public platform: Platform,
     private http: Http,
-    public appConfig: AppConfig
+    public appConfig: AppConfig,
+    private alertCtrl: AlertController,
+
 
 
   ) {
@@ -31,15 +33,35 @@ export class OnesignalProvider {
     this.One.setSubscription(true);
     this.One.enableVibrate(true);
 
-    this.One.handleNotificationReceived().subscribe((data) => {
+    this.One.handleNotificationReceived().subscribe((data:any) => {
       // handle received here how you wish.
       // alert(data)
-      alert('New Notification received !!!')
+      console.log(JSON.stringify(data) );
+      console.log(JSON.stringify(data.payload.body) );
+      this.alertCtrl.create({
+        title: 'Notification',
+        subTitle: JSON.stringify(data.payload.body) ,
+        buttons: [{
+          text: 'OK'
+        }]
+      }).present();
+
+
     });
-    this.One.handleNotificationOpened().subscribe((data) => {
+    this.One.handleNotificationOpened().subscribe((data:any) => {
       // handle opened here how you wish.
+      console.log(JSON.stringify(data) );
+      console.log(JSON.stringify(data.payload.body) );
+
       // alert(data)
-      alert('New Notification received !!!')
+      // alert('New Notification received !!!')
+      this.alertCtrl.create({
+        title: 'Notification',
+        subTitle: JSON.stringify(data.payload.body) ,
+        buttons: [{
+          text: 'OK'
+        }]
+      }).present();
     });
     this.One.endInit();
   }

@@ -28,33 +28,8 @@ export class MyApp {
   initializeApp(){
     this.platform.ready().then(() => {
       
-     let appId = 'e9cd3843-e20f-4659-ba72-c147d26ed3fd'
-     let googleProjectNumber = '1087207048074'
 
-    if (this.platform.is('cordova')) {
-      this.One.startInit(appId, googleProjectNumber );
-      this.One.inFocusDisplaying(this.One.OSInFocusDisplayOption.Notification);
-      this.One.setSubscription(true);
-      this.One.enableVibrate(true);
-      
-      this.One.handleNotificationReceived().subscribe((data) => {
-        // handle received here how you wish.
-        alert(data)
-      });
-      this.One.handleNotificationOpened().subscribe((data) => {
-        // handle opened here how you wish.
-        alert(data)
-      });
-      this.One.endInit();
-        
-      this.statusBar.styleDefault();
-      this.statusBar.backgroundColorByHexString("#BBBBBB");
-      
-      setTimeout(() => {
-        this.splashScreen.hide();
-      }, 500);
-      
-    }
+
     });
   }
 

@@ -153,7 +153,7 @@ var HomePage = (function () {
         Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["n" /* Component */])({
             selector: 'page-home',template:/*ion-inline-start:"/Users/peter/Desktop/mac/_work/khamsat/Ionic3/src/pages/home/home.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>\n      Ionic Blank\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n  <h1>Go Ahead, Click The Button. You Shoud Get A Notification.</h1>\n  <ion-list>\n    <ion-item>\n      <ion-label>Gender</ion-label>\n      <ion-select [(ngModel)]="gender" (ionChange)="changeGender($event)">\n        <ion-option value="male" selected="true">Male</ion-option>\n        <ion-option value="female">Female</ion-option>\n\n      </ion-select>\n    </ion-item>\n    <ion-item>\n      <ion-input type="text" placeholder="your message here ..." [(ngModel)]="message"></ion-input>\n    </ion-item>\n  </ion-list>\n  <button color="nav-border-bottom" ion-button block (click)=\'Send_Push_Notification_To_Available_Users()\'>\n    PUSH NOTIFICATION\n  </button>\n\n  you are :\n  <ion-grid>\n    <ion-row>\n      <ion-col col-6>\n        <button color="nav-border-bottom" ion-button block (click)=\'setUserTag("male")\'>\n          Male\n        </button>\n      </ion-col>\n\n      <ion-col col-6>\n        <button color="nav-border-bottom" ion-button block (click)=\'setUserTag("female")\'>\n          Female\n        </button>\n      </ion-col>\n    </ion-row>\n  </ion-grid>\n\n\n  <hr>\n\n  <p>your current tags :</p>\n  <pre>\n    {{tags}}\n  </pre>\n  <button color="nav-border-bottom" ion-button block (click)=\'clearUserTags()\'>\n    clear user tags\n  </button>\n</ion-content>'/*ion-inline-end:"/Users/peter/Desktop/mac/_work/khamsat/Ionic3/src/pages/home/home.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["d" /* NavController */],
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["e" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_3__ionic_native_onesignal__["a" /* OneSignal */],
             __WEBPACK_IMPORTED_MODULE_0__providers_onesignal_onesignal__["a" /* OnesignalProvider */]])
     ], HomePage);
@@ -228,16 +228,18 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 
 
 var OnesignalProvider = (function () {
-    function OnesignalProvider(One, platform, http, appConfig) {
+    function OnesignalProvider(One, platform, http, appConfig, alertCtrl) {
         this.One = One;
         this.platform = platform;
         this.http = http;
         this.appConfig = appConfig;
+        this.alertCtrl = alertCtrl;
         if (this.platform.is('cordova')) {
             this.initializeOnesignal();
         }
     }
     OnesignalProvider.prototype.initializeOnesignal = function () {
+        var _this = this;
         this.One.startInit(this.appConfig.OneSignal_App_ID, this.appConfig.google_project_number);
         this.One.inFocusDisplaying(this.One.OSInFocusDisplayOption.Notification);
         this.One.setSubscription(true);
@@ -245,12 +247,29 @@ var OnesignalProvider = (function () {
         this.One.handleNotificationReceived().subscribe(function (data) {
             // handle received here how you wish.
             // alert(data)
-            alert('New Notification received !!!');
+            console.log(JSON.stringify(data));
+            console.log(JSON.stringify(data.payload.body));
+            _this.alertCtrl.create({
+                title: 'Notification',
+                subTitle: JSON.stringify(data.payload.body),
+                buttons: [{
+                        text: 'OK'
+                    }]
+            }).present();
         });
         this.One.handleNotificationOpened().subscribe(function (data) {
             // handle opened here how you wish.
+            console.log(JSON.stringify(data));
+            console.log(JSON.stringify(data.payload.body));
             // alert(data)
-            alert('New Notification received !!!');
+            // alert('New Notification received !!!')
+            _this.alertCtrl.create({
+                title: 'Notification',
+                subTitle: JSON.stringify(data.payload.body),
+                buttons: [{
+                        text: 'OK'
+                    }]
+            }).present();
         });
         this.One.endInit();
     };
@@ -326,9 +345,10 @@ var OnesignalProvider = (function () {
     OnesignalProvider = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* Injectable */])(),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__ionic_native_onesignal__["a" /* OneSignal */],
-            __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["e" /* Platform */],
+            __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["f" /* Platform */],
             __WEBPACK_IMPORTED_MODULE_4__angular_http__["b" /* Http */],
-            __WEBPACK_IMPORTED_MODULE_5__app_app_config__["a" /* AppConfig */]])
+            __WEBPACK_IMPORTED_MODULE_5__app_app_config__["a" /* AppConfig */],
+            __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["a" /* AlertController */]])
     ], OnesignalProvider);
     return OnesignalProvider;
 }());
@@ -442,11 +462,11 @@ var AppModule = (function () {
                 __WEBPACK_IMPORTED_MODULE_10__angular_http__["c" /* HttpModule */],
                 __WEBPACK_IMPORTED_MODULE_11_angularfire2_database__["b" /* AngularFireDatabaseModule */],
                 __WEBPACK_IMPORTED_MODULE_12_angularfire2__["a" /* AngularFireModule */].initializeApp(firebaseConfig),
-                __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["c" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_7__app_component__["a" /* MyApp */], {}, {
+                __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["d" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_7__app_component__["a" /* MyApp */], {}, {
                     links: []
                 })
             ],
-            bootstrap: [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["a" /* IonicApp */]],
+            bootstrap: [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["b" /* IonicApp */]],
             entryComponents: [
                 __WEBPACK_IMPORTED_MODULE_7__app_component__["a" /* MyApp */],
                 __WEBPACK_IMPORTED_MODULE_8__pages_home_home__["a" /* HomePage */]
@@ -457,7 +477,7 @@ var AppModule = (function () {
                 __WEBPACK_IMPORTED_MODULE_13__providers_firebase_firebase__["a" /* FirebaseProvider */],
                 __WEBPACK_IMPORTED_MODULE_6__ionic_native_onesignal__["a" /* OneSignal */],
                 __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */],
-                { provide: __WEBPACK_IMPORTED_MODULE_1__angular_core__["v" /* ErrorHandler */], useClass: __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["b" /* IonicErrorHandler */] },
+                { provide: __WEBPACK_IMPORTED_MODULE_1__angular_core__["v" /* ErrorHandler */], useClass: __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["c" /* IonicErrorHandler */] },
                 __WEBPACK_IMPORTED_MODULE_13__providers_firebase_firebase__["a" /* FirebaseProvider */],
                 __WEBPACK_IMPORTED_MODULE_14__providers_onesignal_onesignal__["a" /* OnesignalProvider */]
             ]
@@ -512,36 +532,13 @@ var MyApp = (function () {
         });
     }
     MyApp.prototype.initializeApp = function () {
-        var _this = this;
         this.platform.ready().then(function () {
-            var appId = 'e9cd3843-e20f-4659-ba72-c147d26ed3fd';
-            var googleProjectNumber = '1087207048074';
-            if (_this.platform.is('cordova')) {
-                _this.One.startInit(appId, googleProjectNumber);
-                _this.One.inFocusDisplaying(_this.One.OSInFocusDisplayOption.Notification);
-                _this.One.setSubscription(true);
-                _this.One.enableVibrate(true);
-                _this.One.handleNotificationReceived().subscribe(function (data) {
-                    // handle received here how you wish.
-                    alert(data);
-                });
-                _this.One.handleNotificationOpened().subscribe(function (data) {
-                    // handle opened here how you wish.
-                    alert(data);
-                });
-                _this.One.endInit();
-                _this.statusBar.styleDefault();
-                _this.statusBar.backgroundColorByHexString("#BBBBBB");
-                setTimeout(function () {
-                    _this.splashScreen.hide();
-                }, 500);
-            }
         });
     };
     MyApp = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({template:/*ion-inline-start:"/Users/peter/Desktop/mac/_work/khamsat/Ionic3/src/app/app.html"*/'<ion-nav [root]="rootPage"></ion-nav>\n'/*ion-inline-end:"/Users/peter/Desktop/mac/_work/khamsat/Ionic3/src/app/app.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* Platform */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */], __WEBPACK_IMPORTED_MODULE_4__ionic_native_onesignal__["a" /* OneSignal */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* Platform */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */], __WEBPACK_IMPORTED_MODULE_4__ionic_native_onesignal__["a" /* OneSignal */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */]])
     ], MyApp);
     return MyApp;
 }());
