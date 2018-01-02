@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import firebase from 'firebase';
+// import firebase from 'firebase';
 import { OneSignal} from '@ionic-native/onesignal';
 import { HomePage } from '../pages/home/home';
 @Component({
@@ -28,8 +28,8 @@ export class MyApp {
   initializeApp(){
     this.platform.ready().then(() => {
       
-     let appId = ''
-     let googleProjectNumber = ''
+     let appId = 'e9cd3843-e20f-4659-ba72-c147d26ed3fd'
+     let googleProjectNumber = '1087207048074'
 
     if (this.platform.is('cordova')) {
       this.One.startInit(appId, googleProjectNumber );
@@ -45,7 +45,8 @@ export class MyApp {
         // handle opened here how you wish.
         alert(data)
       });
-      this.One.endInit();  
+      this.One.endInit();
+        
       this.statusBar.styleDefault();
       this.statusBar.backgroundColorByHexString("#BBBBBB");
       
